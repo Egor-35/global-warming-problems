@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from telebot import types
 # Замените 'YOUR_TELEGRAM_BOT_TOKEN' на токен вашего бота
-TOKEN = '7438912361:AAGmaPJuvuvSZ7LGt1lgIEpRQhvJUYCTneY'
+TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
 bot = telebot.TeleBot(TOKEN)
 # Список экологических советов
 tips = [
