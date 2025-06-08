@@ -1,11 +1,11 @@
-import telebot  # Импортируем библиотеку для работы с Telegram Bot API
-import random  # Импортируем модуль для генерации случайных чисел
-import requests  # Импортируем модуль для выполнения HTTP-запросов
-from bs4 import BeautifulSoup  # Импортируем библиотеку для парсинга HTML
-from telebot import types  # Импортируем типы для работы с кнопками и сообщениями в Telegram
+import telebot
+import random
+import requests
+from bs4 import BeautifulSoup
+from telebot import types
 # Замените 'YOUR_TELEGRAM_BOT_TOKEN' на токен вашего бота
-TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
-bot = telebot.TeleBot(TOKEN)  # Создаем экземпляр бота с указанным токеном
+TOKEN = '7438912361:AAGmaPJuvuvSZ7LGt1lgIEpRQhvJUYCTneY'
+bot = telebot.TeleBot(TOKEN)
 # Список экологических советов
 tips = [
     "Используйте общественный транспорт, езжайте на велосипеде или ходите пешком.",
@@ -37,21 +37,135 @@ test_questions = [
         "wrong_option": "На машине",
         "explanation": "Езда на общественном транспорте помогает сократить выбросы углекислого газа и уменьшает нагрузку на дороги."
     },
-    # ... (другие вопросы аналогично)
+    {
+        "question": "Что нужно делать для экономии электроэнергии?",
+        "correct_option": "Выключать свет и электроприборы, когда они не используются",
+        "wrong_option": "Оставлять их включёнными постоянно",
+        "explanation": "Выключение ненужных приборов помогает сократить потребление электроэнергии."
+    },
+    {
+        "question": "Как можно уменьшить загрязнение пластиком?",
+        "correct_option": "Сократить потребление пластика и сортировать мусор",
+        "wrong_option": "Употреблять больше пластиковых изделий",
+        "explanation": "Уменьшение использования пластика и его переработка уменьшают негативное воздействие на окружающую среду."
+    },
+    {
+        "question": "Что помогает снизить углеродный след при покупке продуктов?",
+        "correct_option": "Покупать локальные продукты",
+        "wrong_option": "Покупать продукты, привезённые издалека",
+        "explanation": "Поддержка локальных производителей снижает транспортные расходы и связанные с ними выбросы CO2."
+    },
+    {
+        "question": "Что улучшает качество воздуха и способствует борьбе с изменением климата?",
+        "correct_option": "Посадка деревьев",
+        "wrong_option": "Снос деревьев",
+        "explanation": "Деревья поглощают углекислый газ, выделяя кислород, что улучшает качество воздуха."
+    },
+    {
+        "question": "Как можно сократить объем отходов?",
+        "correct_option": "Покупать товары с минимальной упаковкой",
+        "wrong_option": "Покупать товары с обильной упаковкой",
+        "explanation": "Меньшее количество упаковки означает меньше отходов, требующих утилизации."
+    },
+    {
+        "question": "Как уменьшить количество мусора?",
+        "correct_option": "Использовать многоразовые сумки и бутылки",
+        "wrong_option": "Покупать одноразовые изделия",
+        "explanation": "Многоразовые изделия позволяют сократить количество отходов."
+    },
+    {
+        "question": "Что способствует уменьшению мусора?",
+        "correct_option": "Сократить использование одноразовых изделий",
+        "wrong_option": "Использовать одноразовую посуду",
+        "explanation": "Одноразовая посуда быстро превращается в мусор, её сокращение помогает защитить природу."
+    },
+    {
+        "question": "Как можно сэкономить энергию в доме?",
+        "correct_option": "Регулировать температуру и утеплять дом",
+        "wrong_option": "Не принимать мер по утеплению и регулированию",
+        "explanation": "Утепление дома и правильное регулирование температуры уменьшают затраты на отопление и энергопотребление."
+    },
+    {
+        "question": "Какая деятельность помогает улучшить экологическую ситуацию?",
+        "correct_option": "Участвовать в экологических инициативах",
+        "wrong_option": "Игнорировать экологические проблемы",
+        "explanation": "Активное участие в экологических акциях способствует повышению осведомлённости и улучшению окружающей среды."
+    },
+    {
+        "question": "На что следует обращать внимание при покупке техники?",
+        "correct_option": "На энергоэффективность техники",
+        "wrong_option": "На внешний вид техники, игнорируя её энергопотребление",
+        "explanation": "Энергоэффективная техника потребляет меньше энергии, что помогает сократить выбросы CO2."
+    },
+    {
+        "question": "Что помогает снизить транспортные выбросы?",
+        "correct_option": "Совместное использование автомобилей (карпулинг)",
+        "wrong_option": "Езда на личном автомобиле каждому",
+        "explanation": "Карпулинг уменьшает количество машин на дорогах и, соответственно, автомобильные выбросы."
+    },
+    {
+        "question": "Как можно избежать искусственных добавок в питании?",
+        "correct_option": "Покупать экологически чистые и натуральные продукты",
+        "wrong_option": "Покупать продукты с искусственными добавками",
+        "explanation": "Натуральные продукты обычно выращиваются без химических удобрений и консервантов, что лучше для здоровья и экологии."
+    },
+    {
+        "question": "Как можно снизить зависимость от ископаемых источников энергии?",
+        "correct_option": "Использовать солнечные батареи или ветровые турбины",
+        "wrong_option": "Полагаться на ископаемое топливо",
+        "explanation": "Альтернативные источники энергии не загрязняют окружающую среду и способствуют устойчивому развитию."
+    },
+    {
+        "question": "Какая деятельность способствует сохранению природы?",
+        "correct_option": "Поддержка природоохранных проектов и участие в акциях",
+        "wrong_option": "Игнорирование экологических инициатив",
+        "explanation": "Активное участие в таких проектах помогает привлечь внимание к проблемам экологии и найти пути их решения."
+    },
+    {
+        "question": "Как можно эффективно использовать органические отходы?",
+        "correct_option": "Компостирование для получения удобрения",
+        "wrong_option": "Выбрасывать органические отходы на свалку",
+        "explanation": "Компостирование превращает отходы в ценное удобрение, улучшая почву и снижая нагрузку на свалки."
+    },
+    {
+        "question": "Как можно рациональнее использовать водные ресурсы?",
+        "correct_option": "Использовать дождевую воду для полива растений",
+        "wrong_option": "Использовать только водопроводную воду",
+        "explanation": "Дождевая вода – бесплатный и доступный ресурс, который помогает экономить питьевую воду."
+    },
+    {
+        "question": "Какое изменение в питании помогает снизить углеродный след?",
+        "correct_option": "Сократить потребление мяса",
+        "wrong_option": "Увеличить потребление мяса",
+        "explanation": "Производство мяса связано с высокими выбросами парниковых газов, сокращение его потребления благоприятно сказывается на экологии."
+    },
+    {
+        "question": "Какой выбор средств для уборки более безопасен для природы?",
+        "correct_option": "Использовать экологичные бытовые средства",
+        "wrong_option": "Использовать сильные химические средства",
+        "explanation": "Экологичные средства не содержат агрессивных химикатов, что снижает риск загрязнения воды и почвы."
+    },
+    {
+        "question": "Что следует учитывать при выборе материалов для ремонта?",
+        "correct_option": "Натуральные и экологически чистые материалы",
+        "wrong_option": "Искусственные материалы с высоким содержанием химии",
+        "explanation": "Натуральные материалы менее вредны для здоровья и окружающей среды, их производство часто является более устойчивым."
+    }
 ]
 # Словарь для хранения состояния теста каждого пользователя
 test_states = {}
 def send_test_question(chat_id, user_id):
-    state = test_states[user_id]  # Получаем состояние теста для пользователя
-    q = state["questions"][state["current"]]  # Получаем текущий вопрос
-    markup = types.InlineKeyboardMarkup()  # Создаем клавиатуру для ответов
-    btn_correct = types.InlineKeyboardButton(q["correct_option"], callback_data=f"test_{state['current']}_correct")  # Кнопка для правильного ответа
-    btn_wrong = types.InlineKeyboardButton(q["wrong_option"], callback_data=f"test_{state['current']}_wrong")  # Кнопка для неправильного ответа
-    markup.add(btn_wrong, btn_correct)  # Добавляем кнопки на клавиатуру
-    bot.send_message(chat_id, q["question"], reply_markup=markup)  # Отправляем вопрос с клавиатурой
+    state = test_states[user_id]
+    q = state["questions"][state["current"]]
+    
+    markup = types.InlineKeyboardMarkup()
+    btn_correct = types.InlineKeyboardButton(q["correct_option"], callback_data=f"test_{state['current']}_correct")
+    btn_wrong = types.InlineKeyboardButton(q["wrong_option"], callback_data=f"test_{state['current']}_wrong")
+    markup.add(btn_wrong, btn_correct)
+    
+    bot.send_message(chat_id, q["question"], reply_markup=markup)
 @bot.message_handler(commands=['start'])
 def start_handler(message):
-    # Приветственное сообщение и список доступных команд
     welcome_text = (
         "Привет! Я бот, который помогает бороться с глобальным потеплением.\n"
         "Доступные команды:\n"
@@ -60,67 +174,67 @@ def start_handler(message):
         "/donate - способы поддержать экологические проекты\n"
         "/test - пройти тест по экологическим советам"
     )
-    bot.send_message(message.chat.id, welcome_text)  # Отправляем приветственное сообщение
+    bot.send_message(message.chat.id, welcome_text)
 @bot.message_handler(commands=['tips'])
 def tips_handler(message):
-    tip = random.choice(tips)  # Выбираем случайный совет из списка
-    bot.send_message(message.chat.id, f"Совет: {tip}")  # Отправляем совет пользователю
+    tip = random.choice(tips)
+    bot.send_message(message.chat.id, f"Совет: {tip}")
 @bot.message_handler(commands=['news'])
 def news_handler(message):
-    url = "https://ria.ru/keyword_globalnoe_poteplenie/"  # URL для получения новостей
-    dict_news = {"news": []}  # Словарь для хранения новостей
-    response = requests.get(url)  # Выполняем GET-запрос к указанному URL
-    bs = BeautifulSoup(response.text, "lxml")  # Парсим HTML-код страницы
-    temp = bs.find_all('div', 'list-item')  # Находим все элементы с новостями
+    url = "https://ria.ru/keyword_globalnoe_poteplenie/"
+    dict_news = {"news": []}
+    response = requests.get(url)
+    bs = BeautifulSoup(response.text,"lxml")
+    temp = bs.find_all('div', 'list-item')
     for post in temp:
-        dict_news["news"].append(post.find('a', 'list-item__title').text)  # Добавляем заголовки новостей в список
-    all_news = ';\n'.join(dict_news["news"])  # Объединяем заголовки в одну строку
-    news_text = "Последние новости о глобальном потеплении:\n" + all_news  # Формируем текст с новостями
-    bot.send_message(message.chat.id, news_text)  # Отправляем новости пользователю
+        dict_news["news"].append(post.find('a', 'list-item__title').text)
+    all_news = ';\n'.join(dict_news["news"])
+ 
+    news_text = "Последние новости о глобальном потеплении:\n"+all_news 
+    bot.send_message(message.chat.id, news_text)
 @bot.message_handler(commands=['donate'])
 def donate_handler(message):
-    # Сообщение о способах поддержки экологических проектов
     donate_text = (
         "Поддержите борьбу с глобальным потеплением:\n\n"
         "• WWF: https://www.worldwildlife.org/\n"
         "• Greenpeace: https://www.greenpeace.org/\n"
         "• Экопроекты вашего города (найдите информацию на местных ресурсах)!"
     )
-    bot.send_message(message.chat.id, donate_text)  # Отправляем информацию о пожертвованиях
+    bot.send_message(message.chat.id, donate_text)
 @bot.message_handler(commands=['test'])
 def test_handler(message):
-    user_id = message.chat.id  # Получаем ID пользователя
-    test_states[user_id] = {  # Инициализируем состояние теста для пользователя
-        "current": 0,  # Индекс текущего вопроса
-        "score": 0,  # Счет пользователя
-        "questions": test_questions  # Список вопросов для теста
+    user_id = message.chat.id
+    test_states[user_id] = {
+        "current": 0,
+        "score": 0,
+        "questions": test_questions
     }
-    bot.send_message(user_id, "Начинаем тест! За каждый правильный ответ +1 балл, за неправильный – -1 балл.")  # Сообщение о начале теста
-    send_test_question(user_id, user_id)  # Отправляем первый вопрос
+    bot.send_message(user_id, "Начинаем тест! За каждый правильный ответ +1 балл, за неправильный – -1 балл.")
+    send_test_question(user_id, user_id)
 @bot.callback_query_handler(func=lambda call: call.data.startswith("test_"))
 def test_callback(call):
-    user_id = call.message.chat.id  # Получаем ID пользователя
-    state = test_states[user_id]  # Получаем состояние теста
-    _, q_index, result = call.data.split("_")  # Извлекаем индекс вопроса и результат
-    q_index = int(q_index)  # Преобразуем индекс в целое число
-    current_q = state["questions"][q_index]  # Получаем текущий вопрос
-    if result == "correct":  # Если ответ правильный
-        state["score"] += 1  # Увеличиваем счет
-        response_text = f"Правильно! {current_q['explanation']}"  # Формируем ответ с объяснением
-    else:  # Если ответ неправильный
-        state["score"] -= 1  # Уменьшаем счет
-        response_text = f"Неправильно. {current_q['explanation']}"  # Формируем ответ с объяснением
-    bot.answer_callback_query(call.id)  # Подтверждаем нажатие кнопки
-    bot.send_message(user_id, response_text)  # Отправляем ответ пользователю
-    state["current"] += 1  # Переходим к следующему вопросу
-    if state["current"] < len(state["questions"]):  # Если есть еще вопросы
-        send_test_question(user_id, user_id)  # Отправляем следующий вопрос
-    else:  # Если вопросы закончились
-        bot.send_message(user_id, f"Тест завершён! Ваш итоговый счет: {state['score']}")  # Отправляем итоговый счет
-        del test_states[user_id]  # Удаляем состояние теста пользователя
+    user_id = call.message.chat.id
+    state = test_states[user_id]
+    _, q_index, result = call.data.split("_")
+    q_index = int(q_index)
+    current_q = state["questions"][q_index]
+    if result == "correct":
+        state["score"] += 1
+        response_text = f"Правильно! {current_q['explanation']}"
+    else:
+        state["score"] -= 1
+        response_text = f"Неправильно. {current_q['explanation']}"
+    bot.answer_callback_query(call.id)
+    bot.send_message(user_id, response_text)
+    state["current"] += 1
+    if state["current"] < len(state["questions"]):
+        send_test_question(user_id, user_id)
+    else:
+        bot.send_message(user_id, f"Тест завершён! Ваш итоговый счет: {state['score']}")
+        del test_states[user_id]
 @bot.message_handler(func=lambda message: True)
 def catch_all(message):
-    # Обработка всех остальных сообщений
     bot.send_message(message.chat.id, "Извините, я не понимаю эту команду. Введите /start, чтобы увидеть список доступных команд.")
-print("Бот запущен...")  # Сообщение о запуске бота
-bot.infinity_polling(none_stop=True)  # Запускаем бесконечный опрос для обработки сообщений
+
+print("Бот запущен...")
+bot.infinity_polling(none_stop=True)
